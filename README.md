@@ -79,7 +79,7 @@ docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address 
 streamlit run streamlit_app.py
 ```
 
-3. 在浏览器中访问应用（默认地址：http://localhost:8501）
+3. 在浏览器中访问应用（默认地址：http://localhost:9527）
 
 4. 使用步骤：
    - 点击"上传报销单图片"选择一张或多张报销单图片
@@ -104,6 +104,11 @@ project_a/
 ```
 
 ## 更新日志
+
+### [2025-01-09]: [1.3.0]
+- 修改服务端口为 9527
+- 优化镜像保存格式，使用版本号作为文件名后缀
+- 更新文档中的端口信息
 
 ### [2025-01-09]: [1.2.5]
 - 优化Docker镜像标签，使用阿里云容器镜像服务
@@ -151,18 +156,18 @@ project_a/
 docker pull registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
 
 # 运行容器
-docker run -p 8501:8501 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
+docker run -p 9527:9527 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
 ```
 
 ### 方式二：本地构建
 ```bash
 # 使用构建脚本（推荐）
 chmod +x local_build_image.sh
-./local_build_image.sh 1.2.5  # 指定版本号
+./local_build_image.sh 1.3.0  # 指定版本号
 
 # 或手动构建
 docker build -t registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest .
-docker run -p 8501:8501 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
+docker run -p 9527:9527 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
 ```
 
 ### 方式三：直接运行

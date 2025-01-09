@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # 暴露端口
-EXPOSE 8501
+EXPOSE 9527
 
 # 启动命令
-CMD ["streamlit", "run", "streamlit_app.py", "--server.address", "0.0.0.0"]
+CMD ["streamlit", "run", "streamlit_app.py", "--server.port=9527", "--server.address=0.0.0.0"]
