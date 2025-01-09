@@ -26,3 +26,4 @@ always response in 中文
 1.版本号以 x.x.x 格式
 2.在根目录下 README.md 中的"更新日志"栏目维护每次提交的内容描述，格式为[{日期}]: [{版本号}] 任务内容简述
 3.在根目录下 dist/ 中生成的 docker image 文件名以{项目名}-{时间戳}, 超过 3 个物料则按时间排序删除老旧的物料
+4.提交命令为 git add . && git commit -m "{更新日志}" && git push -f origin main
