@@ -39,19 +39,19 @@ class StorageManager:
             logger.error(f"存储桶操作失败: {str(e)}")
             raise
 
-    def _get_object_name(self, file_type: str) -> str:
+    def _get_object_name(self, expense_user: str, file_type: str) -> str:
         """生成对象名称，使用时间戳避免重复"""
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        return f"{file_type}/{timestamp}.xlsx"
+        return f"{file_type}/{expense_user}_{timestamp}.xlsx"
 
-    def save_excel(self, excel_data: bytes) -> str:
+    def save_excel(self, excel_data: bytes, expense_user: str = "未知") -> str:
         """
         保存Excel文件到MinIO
         返回文件的URL
         """
         try:
             # 生成文件名
-            object_name = self._get_object_name("excel")
+            object_name = self._get_object_name(expense_user, "excel")
             
             # 将数据转换为流
             data_stream = io.BytesIO(excel_data)

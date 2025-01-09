@@ -83,7 +83,8 @@ def process_and_save(image_bytes, filename):
             excel_data = f.read()
             
         storage_service = get_storage_service()
-        file_url = storage_service.save_excel(excel_data)
+        # 使用识别结果中的报销人信息
+        file_url = storage_service.save_excel(excel_data, result.get('报销人', '未知'))
         
         # 4. 清理临时文件
         os.unlink(output_path)
