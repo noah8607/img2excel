@@ -105,25 +105,80 @@ project_a/
 
 ## 更新日志
 
-[2025-01-09]: [1.0.0] 初始版本发布
-- 支持报销单图片识别
-- 支持批量处理
-- 支持Excel导出
-- 支持MinIO存储
-- 优化用户界面
+### [2025-01-09]: [1.2.5]
+- 优化Docker镜像标签，使用阿里云容器镜像服务
+- 更新Docker使用说明，确保国内环境可用
+- 添加本地构建脚本 local_build_image.sh
 
-[2025-01-09]: [1.1.0]
-- 优化服务初始化逻辑，实现按需加载
-- 注释掉总金额验证逻辑
-- 优化代码结构，提高性能
-- 改进清除结果功能，确保完全重置系统状态
+### [2025-01-09]: [1.2.4]
+- 优化Docker构建配置，使用国内镜像源
+- 简化系统依赖安装过程
 
-[2025-01-09]: [1.2.0]
+### [2025-01-09]: [1.2.3]
+- 使用阿里云Python镜像
+- 优化基础镜像选择
+
+### [2025-01-09]: [1.2.2]
+- 将 .windsurfrules 加入 gitignore
+- 优化项目配置文件管理
+
+### [2025-01-09]: [1.2.1]
+- 优化Excel文件命名格式为"报销人_单号_时间戳"
+- 改进空值处理逻辑，使用空字符串代替默认值
+
+### [2025-01-09]: [1.2.0]
 - 优化项目结构，移除无关文件到dist目录
 - 修改Excel文件命名格式为"报销人_时间戳"
 - 更新.gitignore配置
 - 优化Docker构建，使用阿里云镜像源
 
-[2025-01-09]: [1.2.1]
-- 优化Excel文件命名格式为"报销人_单号_时间戳"
-- 改进空值处理逻辑，使用空字符串代替默认值
+### [2025-01-09]: [1.1.0]
+- 优化服务初始化逻辑，实现按需加载
+- 注释掉总金额验证逻辑
+- 优化代码结构，提高性能
+- 改进清除结果功能，确保完全重置系统状态
+
+### [2025-01-08]: [1.0.0]
+- 初始版本发布
+- 实现基本的报销单识别功能
+- 支持Excel导出和MinIO存储
+
+## Docker 使用说明
+
+### 方式一：从阿里云镜像仓库拉取（推荐）
+```bash
+# 拉取最新版本
+docker pull registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
+
+# 运行容器
+docker run -p 8501:8501 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
+```
+
+### 方式二：本地构建
+```bash
+# 使用构建脚本（推荐）
+chmod +x local_build_image.sh
+./local_build_image.sh 1.2.5  # 指定版本号
+
+# 或手动构建
+docker build -t registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest .
+docker run -p 8501:8501 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
+```
+
+### 方式三：直接运行
+```bash
+chmod +x start.sh
+./start.sh
+```
+
+## 注意事项
+
+1. 确保环境变量配置正确
+2. 启动前确保MinIO服务器正常运行
+3. 上传的图片格式支持：jpg、jpeg、png
+4. Excel文件下载链接有效期为7天
+5. 使用Docker时，建议优先使用阿里云镜像源以提高下载速度
+
+## 许可证
+
+MIT License
