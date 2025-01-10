@@ -32,6 +32,7 @@
 
 - Python 3.11+
 - MinIO服务器
+- Docker（用于容器化部署）
 - 依赖包：见 requirements.txt
 
 ## 安装说明
@@ -65,6 +66,10 @@ DASHSCOPE_API_KEY=your_api_key_here
 MINIO_HOST=localhost:9000
 MINIO_ACCESS_KEY=your_access_key_here
 MINIO_SECRET_KEY=your_secret_key_here
+
+# Docker Configuration
+DOCKER_USERNAME=your_username
+DOCKER_PASSWORD=your_password
 ```
 
 ## 使用说明
@@ -81,13 +86,33 @@ streamlit run streamlit_app.py
 
 3. 在浏览器中访问应用（默认地址：http://localhost:9527）
 
-4. 使用步骤：
-   - 点击"上传报销单图片"选择一张或多张报销单图片
-   - 系统会自动处理每张图片并显示识别结果
-   - 确认所有图片处理完成后，点击"导出Excel"
-   - Excel文件会自动保存到MinIO服务器，并提供下载链接
-   - 如果MinIO保存失败，系统会提供本地下载选项
-   - 如需清除已处理的结果，点击"清除所有结果"
+## Docker 部署
+
+### 方式一：从阿里云镜像仓库拉取（推荐）
+```bash
+# 拉取镜像（使用最新版本）
+docker pull crpi-608fba9xxjhcq7gx.cn-shanghai.personal.cr.aliyuncs.com/dcby/img2excel:latest
+
+# 或拉取指定版本
+docker pull crpi-608fba9xxjhcq7gx.cn-shanghai.personal.cr.aliyuncs.com/dcby/img2excel:1.3.2
+
+# 运行容器
+docker run -p 9527:9527 --env-file .env crpi-608fba9xxjhcq7gx.cn-shanghai.personal.cr.aliyuncs.com/dcby/img2excel:1.3.2
+```
+
+### 方式二：本地构建
+```bash
+# 构建并推送镜像
+chmod +x local_build_image.sh
+./local_build_image.sh <版本号>  # 例如：./local_build_image.sh 1.3.2
+```
+
+local_build_image.sh 脚本功能：
+- 从 .env 文件或环境变量加载 Docker 认证信息
+- 构建并标记 Docker 镜像
+- 推送镜像到阿里云容器镜像服务
+- 保存本地镜像备份（保留最新3个版本）
+- 自动清理本地镜像缓存
 
 ## 项目结构
 
@@ -96,6 +121,8 @@ project_a/
 ├── streamlit_app.py    # 主应用程序
 ├── requirements.txt    # 项目依赖
 ├── .env               # 环境变量配置
+├── Dockerfile         # Docker构建文件
+├── local_build_image.sh # 本地构建脚本
 └── utils/
     ├── qwen_processor.py    # 千问API处理模块
     ├── image_processor.py   # 图片处理模块
@@ -105,84 +132,31 @@ project_a/
 
 ## 更新日志
 
+### [2025-01-10]: [1.3.2]
+- 优化 Docker 构建脚本，提高代码可维护性
+- 简化镜像构建流程，移除多余标签
+- 改进错误处理和日志输出
+- 更新文档，完善 Docker 部署说明
+- 统一镜像命名规范
+
+### [2025-01-10]: [1.3.1]
+- 优化 Docker 构建脚本，使用环境变量管理认证信息
+- 更新文档，添加 Docker 配置说明
+- 优化构建过程，提高构建速度
+
 ### [2025-01-09]: [1.3.0]
 - 修改服务端口为 9527
 - 优化镜像保存格式，使用版本号作为文件名后缀
 - 更新文档中的端口信息
 
-### [2025-01-09]: [1.2.5]
-- 优化Docker镜像标签，使用阿里云容器镜像服务
-- 更新Docker使用说明，确保国内环境可用
-- 添加本地构建脚本 local_build_image.sh
-
-### [2025-01-09]: [1.2.4]
-- 优化Docker构建配置，使用国内镜像源
-- 简化系统依赖安装过程
-
-### [2025-01-09]: [1.2.3]
-- 使用阿里云Python镜像
-- 优化基础镜像选择
-
-### [2025-01-09]: [1.2.2]
-- 将 .windsurfrules 加入 gitignore
-- 优化项目配置文件管理
-
-### [2025-01-09]: [1.2.1]
-- 优化Excel文件命名格式为"报销人_单号_时间戳"
-- 改进空值处理逻辑，使用空字符串代替默认值
-
-### [2025-01-09]: [1.2.0]
-- 优化项目结构，移除无关文件到dist目录
-- 修改Excel文件命名格式为"报销人_时间戳"
-- 更新.gitignore配置
-- 优化Docker构建，使用阿里云镜像源
-
-### [2025-01-09]: [1.1.0]
-- 优化服务初始化逻辑，实现按需加载
-- 注释掉总金额验证逻辑
-- 优化代码结构，提高性能
-- 改进清除结果功能，确保完全重置系统状态
-
-### [2025-01-08]: [1.0.0]
-- 初始版本发布
-- 实现基本的报销单识别功能
-- 支持Excel导出和MinIO存储
-
-## Docker 使用说明
-
-### 方式一：从阿里云镜像仓库拉取（推荐）
-```bash
-# 拉取最新版本
-docker pull registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
-
-# 运行容器
-docker run -p 9527:9527 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
-```
-
-### 方式二：本地构建
-```bash
-# 使用构建脚本（推荐）
-chmod +x local_build_image.sh
-./local_build_image.sh 1.3.0  # 指定版本号
-
-# 或手动构建
-docker build -t registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest .
-docker run -p 9527:9527 --env-file .env registry.cn-hangzhou.aliyuncs.com/img2excel/expense-report:latest
-```
-
-### 方式三：直接运行
-```bash
-chmod +x start.sh
-./start.sh
-```
-
 ## 注意事项
 
-1. 确保环境变量配置正确
+1. 确保环境变量配置正确（包括 Docker 认证信息）
 2. 启动前确保MinIO服务器正常运行
 3. 上传的图片格式支持：jpg、jpeg、png
 4. Excel文件下载链接有效期为7天
 5. 使用Docker时，建议优先使用阿里云镜像源以提高下载速度
+6. Docker 相关的敏感信息请通过环境变量管理，不要直接写入代码
 
 ## 许可证
 
