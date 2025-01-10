@@ -14,8 +14,9 @@ class StorageManager:
             # 移除可能存在的协议前缀
             host = host.replace('http://', '').replace('https://', '')
             
+            # 简化客户端初始化
             self.client = Minio(
-                host,
+                endpoint=host,  # 使用 endpoint 参数名
                 access_key=access_key,
                 secret_key=secret_key,
                 secure=False,  # 如果使用 HTTPS，设置为 True
