@@ -18,8 +18,7 @@ ROOT_DIR = Path(__file__).resolve().parent
 # 加载环境变量
 env_path = ROOT_DIR / '.env'
 if not env_path.exists():
-    st.error("找不到 .env 文件，请确保文件存在并包含必要的环境变量")
-    sys.exit(1)
+    st.warning("WARNING: .env file not found, params will be loaded from env vars")
 
 load_dotenv(env_path)
 
