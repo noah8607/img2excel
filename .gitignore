@@ -44,3 +44,4 @@ dist/
 *.png
 *.txt
 !requirements.txt
+.windsurfrules
