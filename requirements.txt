@@ -1,7 +1,22 @@
+# Web 框架
 streamlit==1.29.0
-python-dotenv==1.0.0
+
+# 图像处理
 Pillow==10.1.0
+
+# 数据处理
 pandas==2.1.4
 openpyxl==3.1.2
+
+# 存储服务
 minio==7.2.0
+
+# API 客户端
+openai==1.6.1
 requests==2.31.0
+
+# 工具库
+python-dotenv==1.0.0
+typing-extensions==4.9.0
+uuid==1.30
+pathlib==1.0.1
