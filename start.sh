@@ -15,4 +15,4 @@ pip install -r requirements.txt
 
 # 启动应用
 echo "启动应用..."
-streamlit run streamlit_app.py
+streamlit run streamlit_app.py --server.port=9527
