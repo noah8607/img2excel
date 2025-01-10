@@ -15,7 +15,6 @@ RUN pip config set global.index-url https://mirrors.aliyun.com/pypi/simple/ && \
 # 复制应用代码
 COPY utils/ ./utils/
 COPY streamlit_app.py .
-COPY .env .
 
 # 暴露端口
 EXPOSE 9527
